@@ -1,42 +1,69 @@
-﻿@using TaskManagementSystem.Core.DTOs.Task
-@model TaskRequestDto
+﻿<h2>Create Task</h2>
 
-<div class="container mt-4 col-md-6">
-    <h3>Create Task</h3>
-
-    <input id="Title" class="form-control mb-2" placeholder="Task Title" />
-    <input id="Description" class="form-control mb-2" placeholder="Description" />
-    <select id="TaskStatus" asp-for="TaskStatus" asp-items="@(new SelectList(ViewBag.TaskStatus, "Value", "Text"))" class="form-control">
-            <option value="">-- Select Status --</option>
-    </select>
-     <select id="TaskPriority" asp-for="TaskPriority" asp-items="@(new SelectList(ViewBag.TaskPriority, "Value", "Text"))" class="form-control">
-            <option value="">-- Select Priority --</option>
-    </select>
-    <input type="date" id="" class="form-control mb-2" placeholder="Due Date" />
-
-    <button onclick="createTask()" class="btn btn-success">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+<div class="form-group mb-2">
+    <label>Title</label>
+    <input id="title" class="form-control" />
 </div>
 
+<div class="form-group mb-2">
+    <label>Description</label>
+    <textarea id="description" class="form-control"></textarea>
+</div>
+
+<div class="form-group mb-2">
+    <label>Status</label>
+    <select id="taskStatus" class="form-control">
+        <option value="todo">To Do</option>
+        <option value="in_progress">In Progress</option>
+        <option value="done">Done</option>
+    </select>
+</div>
+
+<div class="form-group mb-2">
+    <label>Priority</label>
+    <select id="taskPriority" class="form-control">
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </select>
+</div>
+
+<div class="form-group mb-3">
+    <label>Due Date</label>
+    <input id="dueDate" type="date" class="form-control" />
+</div>
+
+<button type="button" onclick="saveTask()" class="btn btn-success">
+    Save
+</button>
+
 <script>
-    function createTask() {
-        var data = {
-            title: $("#Title").val(),
-            description: $("#Description").val(),
-            status: $("#TaskStatus option:selected").text(),
-            priority: $("#TaskPriority option:selected").text()
+    function saveTask() {
+        let data = {
+            title: $("#title").val(),
+            description: $("#description").val(),
+            status: $("#taskStatus").val(),
+            priority: $("#taskPriority").val(),
+            dueDate: $("#dueDate").val()
         };
 
+        console.log(data);
+
         $.ajax({
-            url: 'api/tasks/Create',
-            type: 'POST',
-            contentType: 'application/json',
+            url: "/api/TaskAPI/tasks",
+            method: "POST",
+            contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
-            success: function (res) {
-                alert("Task Created Successfully!");
+            success: function () {
+                alert("Task created!");
                 window.location.href = "/Task/Index";
+            },
+            error: function (err) {
+                console.log("API Error:", err.responseText);
+                alert("Create failed!");
             }
         });
     }
+
 </script>
 

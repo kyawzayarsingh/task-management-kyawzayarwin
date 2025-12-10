@@ -5,8 +5,8 @@
         public Guid TaskId { get; set; }
         public string Title { get; set; }  
         public string Description { get; set; } 
-        public string TaskStatus { get; set; }
-        public string TaskPriority { get; set; }
-        public string CreationDate { get; set; }
+        public string Status { get; set; }
+        public string Priority { get; set; }
+        public string DueDate { get; set;  }
     }
 }

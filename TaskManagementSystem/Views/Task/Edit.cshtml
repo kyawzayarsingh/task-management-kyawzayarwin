@@ -1,0 +1,57 @@
+﻿<h2>Edit Task</h2>
+
+<input type="hidden" id="taskId" value="@ViewBag.Id" />
+
+<input id="title" class="form-control mb-2" />
+<textarea id="description" class="form-control mb-2"></textarea>
+
+<select id="status" class="form-control mb-2">
+    <option>To Do</option>
+    <option>In Progress</option>
+    <option>Done</option>
+</select>
+
+<select id="priority" class="form-control mb-2">
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+</select>
+
+<input id="dueDate" type="date" class="form-control mb-3" />
+
+<button onclick="update()" class="btn btn-primary">Update</button>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    let id = $("#taskId").val();
+
+    $(document).ready(function () {
+        $.get(`/api/TaskAPI/tasks/${id}`, function (data) {
+            console.log(data);
+            $("#title").val(data.title);
+            $("#description").val(data.description);
+            $("#status").val(data.status);
+            $("#priority").val(data.priority);
+            $("#dueDate").val(data.dueDate);
+        });
+    });
+
+    function update() {
+        let task = {
+            taskId: id,
+            title: $("#title").val(),
+            description: $("#description").val(),
+            status: $("#status").val(),
+            priority: $("#priority").val(),
+            dueDate: $("#dueDate").val()
+        };
+
+        $.ajax({
+            url: `/api/TaskAPI/tasks`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(task),
+            success: () => location.href = "/Task/Index"
+        });
+    }
+</script>

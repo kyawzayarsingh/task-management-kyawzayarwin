@@ -1,16 +1,18 @@
-﻿namespace TaskManagementSystem.Core.Enums
+﻿using System.ComponentModel;
+
+namespace TaskManagementSystem.Core.Enums
 {
     public enum Status : byte
     {
-        todo = 1,
-        in_progress,
-        done
+        [Description("To Do")] todo = 1,
+        [Description("In Progress")] in_progress,
+        [Description("Done")] done
     }
 
     public enum TaskPriority : byte
     {
-        low = 1,
-        medium,
-        high
+        [Description("Low")] low = 1,
+        [Description("Medium")] medium,
+        [Description("High")] high
     }
 }

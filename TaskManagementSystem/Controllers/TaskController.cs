@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using TaskManagementSystem.Core.Enums;
 using TaskManagementSystem.Core.Interfaces;
 
 namespace TaskManagementSystem.Controllers
@@ -17,31 +14,17 @@ namespace TaskManagementSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var tasks = await _taskRepo.GetAllTaskAsync();
-            return View(tasks);
+            return View();
         }
 
         public IActionResult Create()
         {
-            var statusList = Enum.GetValues(typeof(Status))
-                             .Cast<Status>()
-                             .Select(e => new SelectListItem
-                             {
-                                 Value = e.ToString(),
-                                 Text = e.ToString()
-                             }).ToList();
+            return View();
+        }
 
-            var priorityList = Enum.GetValues(typeof(TaskPriority))
-                             .Cast<TaskPriority>()
-                             .Select(e => new SelectListItem
-                             {
-                                 Value = e.ToString(),
-                                 Text = e.ToString()
-                             }).ToList();
-
-            ViewBag.TaskStatus = statusList;
-            ViewBag.TaskPriority = priorityList;
-
+        public IActionResult Edit(Guid id)
+        {
+            ViewBag.Id = id;
             return View();
         }
     }

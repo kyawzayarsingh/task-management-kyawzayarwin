@@ -32,14 +32,14 @@ namespace TaskManagementSystem.APIControllers
             return new JsonResult(true);
         }
 
-        
+        [HttpGet("tasks/{id}")]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var employee = await _taskRepository.GetTaskByIdAsync(id);
-            return new JsonResult(employee);
+            var task = await _taskRepository.GetTaskByIdAsync(id);
+            return new JsonResult(task);
         }
 
-        [HttpPost]
+        [HttpPut("tasks")]
         public async Task<IActionResult> Edit([FromBody] TaskRequestDto dto)
         {
             if (!ModelState.IsValid)
@@ -49,17 +49,12 @@ namespace TaskManagementSystem.APIControllers
             return new JsonResult(new { success = true });
         }
 
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var emp = await _taskRepository.GetTaskByIdAsync(id);
-            return Ok(emp);
-        }
-
-        [HttpDelete("tasks/id")]
-        public async Task<IActionResult> DeleteConfirmed([FromBody] Guid id)
+        [HttpDelete("tasks/{id}")]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _taskRepository.DeleteTaskAsync(id);
             return new JsonResult(new { success = true });
         }
     }
+
 }

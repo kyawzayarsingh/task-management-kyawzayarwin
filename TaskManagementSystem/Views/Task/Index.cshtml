@@ -1,1 +1,54 @@
-﻿
+﻿<h2>Task List</h2>
+
+<a href="/Task/Create" class="btn btn-primary mb-3">Create Task</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="taskBody"></tbody>
+</table>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+    $(document).ready(loadTasks);
+
+    function loadTasks() {
+        $.get('/api/TaskAPI/tasks', function (data) {
+            let rows = '';
+
+            $.each(data, function (i, item) {
+                rows += `
+                    <tr>
+                        <td>${item.title}</td>
+                        <td>${item.status}</td>
+                        <td>${item.priority}</td>
+                        <td>${item.dueDate}</td>
+                        <td>
+                            <a href="/Task/Edit/${item.taskId}" class="btn btn-warning btn-sm">Edit</a>
+                            <button onclick="deleteTask('${item.taskId}')" class="btn btn-danger btn-sm">Delete</button>
+                        </td>
+                    </tr>`;
+            });
+
+            $("#taskBody").html(rows);
+        });
+    }
+
+    function deleteTask(id) {
+        if (!confirm("Delete this task?")) return;
+
+        $.ajax({
+            url: `/api/TaskAPI/tasks/${id}`,
+            type: 'DELETE',
+            success: loadTasks
+        });
+    }
+</script>
